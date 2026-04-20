@@ -1,0 +1,25 @@
+INFO - Processing GWAS command line parameters
+INFO - Building beta for covid_severe_vs_pop.txt.gz and /ix1/hugen2073-2026s/hw7/tissue_weights/gtex_v7_Lung_imputed_europeans_tw_0.5_signif.db
+INFO - Reading input gwas with special handling: /ix1/hugen2073-2026s/hw7/GWAS/covid_severe_vs_pop.txt.gz
+INFO - Processing input gwas
+INFO - Aligning GWAS to models
+INFO - Trimming output
+INFO - Successfully parsed input gwas in 30.235427480190992 seconds
+INFO - Started metaxcan process
+INFO - Loading model from: /ix1/hugen2073-2026s/hw7/tissue_weights/gtex_v7_Lung_imputed_europeans_tw_0.5_signif.db
+INFO - Loading covariance data from: /ix1/hugen2073-2026s/hw7/ld/gtex_v7_Lung_imputed_eur_covariances.txt.gz
+INFO - Processing loaded gwas
+INFO - Started metaxcan association
+WARNING - Issues processing gene ENSG00000134533.2, skipped
+WARNING - Issues processing gene ENSG00000250305.4, skipped
+WARNING - Issues processing gene ENSG00000267505.1, skipped
+INFO - 10 % of model's snps found so far in the gwas study
+INFO - 20 % of model's snps found so far in the gwas study
+INFO - 30 % of model's snps found so far in the gwas study
+INFO - 40 % of model's snps found so far in the gwas study
+INFO - 50 % of model's snps found so far in the gwas study
+INFO - 60 % of model's snps found so far in the gwas study
+INFO - 70 % of model's snps found so far in the gwas study
+INFO - 80 % of model's snps found so far in the gwas study
+INFO - 83 % of model's snps used
+INFO - Sucessfully processed metaxcan association in 57.93661170080304 seconds

@@ -1,0 +1,82 @@
+---
+title: "hw7"
+format: html
+editor: visual
+---
+
+## Part 2
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+
+#csv file to R
+hw7_p1_results <- read.csv("./hw7_results.csv")
+
+#sort by p-val most sig to least
+sorted_hw7 <- hw7_p1_results %>% sort_by(hw7_p1_results$pvalue)
+
+sort(sorted_hw7$gene) %>% unique() %>% length()
+
+#make volcano plot
+# y = -log10(pvalue)
+# x = effect size
+# xlim arg changes viewing window
+# horz line with bonferroni sig thresh (# genes tested NOT SNPs; assume all independ)
+# label top 3 genes (gene_name)
+# save as vector
+
+# Bonferroni
+# https://en.wikipedia.org/wiki/Bonferroni_correction 
+#used link above to determine bon correction
+# m = 7,930 since there are that many unique genes
+#alpha of 0.05 since that is industry standard
+# bon = a/m = 0.05/7930 = 6.30517e-06
+
+#Used https://www.reddit.com/r/Rlanguage/comments/tv78wq/how_do_i_add_labels_to_two_specific_points_in_my/ to learn how to label specific points
+label <- as.data.frame(head(sorted_hw7, n = 3))
+
+sorted_hw7 %>% ggplot() +
+  geom_point(aes(y = -log10(pvalue), x = effect_size))+
+  geom_hline(yintercept = -log10(6.30517e-06))+
+  geom_text(data = label, aes(label = gene_name, x = effect_size, y = -log10(pvalue)), position = position_nudge(y = 0.5))+
+  xlim(-10, 10)
+
+#save as vector graphic
+ggsave("volcano.pdf", width = 20, height = 20, units = "cm", dpi = 600)
+
+#Investigate the 3 most significant genes further 
+
+#Record their gene_names, pvalues, and effect_sizes 
+
+#1. name = CCR5, p-value = 8.499364e-16, effect_size = -1.2718632
+#2. name = TYK2, p-value = 1.734110e-05, effect_size = 0.7828881
+#3. name = CXCR6, p-value = 1.623082e-04, effect_size = -0.5670695
+
+#Do they seem relevant to the phenotype? Have other studies implicated them? Write a sentence or two summarizing the relevance of each gene. If possible, comment on the effect direction you saw vs. effect directions in relevant studies. (Hint: search PubMed with a term like “gene_name covid”; you shouldn’t have to spend more than 5-10 minutes on each gene) 
+
+#https://pubmed.ncbi.nlm.nih.gov/41827835/
+#The CCR5 gene seems relevant to the phenotype as the volcano plot shows that with the bonferroni genome wide significance threshold the CCR5 gene is significant. When looking at PubMed it seems like downregulated CCR5 is accociated with covid in the paper linked above, which is shown below in  the volcano plot as typically those points in the negative are down regulated. 
+
+#https://pubmed.ncbi.nlm.nih.gov/41445728/
+#The TYK2 gene is under the bonferroni genome wide significance threshold in my data, which indicates that it is not significantly affecting the phenotype of Covid. When looking at the PubMed article above they also found that TYK2 remained unchanged in Covid patients. There were no effect direction in the paper to comment on.
+
+
+#https://pubmed.ncbi.nlm.nih.gov/37762093/
+#The CXCR6 gene showed no genome wide significance with bonferroni correction in the volcano plot. The PubMed paper linked above, indicates significant downregulation of expression of the gene when looking at a severe covid phenotype. My data also shows a downregulation, but does not show genome wide significance of the gene indicated.  
+
+#Get the gene_names for genes with p < 0.01 (even though that’s probably far too liberal). How many are there? 
+
+p_01 <- sorted_hw7 %>% filter(sorted_hw7$pvalue < 0.01)
+p_01 <- p_01 %>% select(gene_name)
+
+#There are 102 genes
+
+#Write these to a text file with one gene_name per line, without quotation marks, and without row/column names. The genes should be sorted, most significant to least significant. 
+
+write_delim(x = p_01, file = "p01.txt", delim = "\n", append = FALSE, col_names = FALSE, quote = "none")
+```
+
+
